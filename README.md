@@ -23,4 +23,6 @@ ii) source env/scripts\activate
 ```
 
 3. All of the packages needed in this project is installed 😀.
-4. Then use
+4. Then use `python3 upload_into_excel_file.py` to run the script.
+
+Thank You. 🙏
