@@ -1,15 +1,6 @@
 import requests
-import openpyxl  # importing requests and openpyxl
+import pandas as pd
 from bs4 import BeautifulSoup  # importing BeautifulSoup from bs4
-
-excel = openpyxl.Workbook()  # Creating Workbook
-
-sheet = excel.active  # working in active sheet
-sheet.title = 'Top 250 high rated movies'
-# print(excel.sheetnames)
-
-# initializing column headers
-sheet.append(["Rank", "Name", "Year of release", "Rating"])
 
 try:
 
@@ -22,6 +13,8 @@ try:
 
     # getting the tag and class and also getting the content inside of tr tag
     movies = soup.find('tbody', class_="lister-list").find_all('tr')
+
+    posts = []
 
     for movie in movies:
         # getting the text written in "a" tag after entering into the "td" tag
@@ -36,11 +29,17 @@ try:
         rating = movie.find('td', class_="ratingColumn imdbRating").strong.text
 
         # print(rank, name, year, rating)
-        sheet.append([rank, name, year, rating])
 
+        imdb_data = {
+            "Rank": rank,
+            "Name": name,
+            "Year": year,
+            "Rating": rating,
+            }
+        posts.append(imdb_data)
+
+    data = pd.DataFrame(posts)
+    data.to_csv("IMDB_ratings.csv", index=None)
 
 except Exception as e:
     print(e)
-
-excel.save('IMDB_ratings.xlsx')
-print("Successfull!!!")
